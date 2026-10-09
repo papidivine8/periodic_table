@@ -16,3 +16,21 @@ then
 else
   CONDITION="e.symbol = '$1' OR e.name = '$1'"
 fi
+
+RESULT=$($PSQL "
+SELECT format(
+  'The element with atomic number %s is %s (%s). It''s a %s, with a mass of %s amu. %s has a melting point of %s celsius and a boiling point of %s celsius.',
+  e.atomic_number,
+  e.name,
+  e.symbol,
+  t.type,
+  p.atomic_mass,
+  e.name,
+  p.melting_point_celsius,
+  p.boiling_point_celsius
+)
+FROM elements e
+JOIN properties p USING (atomic_number)
+JOIN types t USING (type_id)
+WHERE $CONDITION;
+")
