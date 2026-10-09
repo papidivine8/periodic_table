@@ -34,3 +34,10 @@ JOIN properties p USING (atomic_number)
 JOIN types t USING (type_id)
 WHERE $CONDITION;
 ")
+
+if [[ -z $RESULT ]]
+then
+  echo "I could not find that element in the database."
+else
+  echo "$RESULT"
+fi
